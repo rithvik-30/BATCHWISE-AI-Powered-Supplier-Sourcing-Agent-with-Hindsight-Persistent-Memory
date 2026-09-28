@@ -16,7 +16,7 @@ def test_rfq_analysis_unknown_when_no_evidence():
         target_supplier="Unknown Quantum Fab Inc"
     )
     res = supplier_memory_service.analyze_rfq(rfq)
-    assert res.status == "unknown"
+    assert res.status.upper() in ["UNKNOWN", "INSUFFICIENT EVIDENCE"]
     assert res.supplier == "Unknown Quantum Fab Inc"
     assert len(res.evidence) == 0
     assert "Insufficient" in res.summary

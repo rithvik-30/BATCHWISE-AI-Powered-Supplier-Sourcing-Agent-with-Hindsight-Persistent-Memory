@@ -99,15 +99,16 @@
     "quoted_price": 2100.0,
     "actual_price": 2100.0,
     "promised_lead_time_days": 14,
-    "actual_lead_time_days": 18,
+    "actual_lead_time_days": 14,
     "conditions": [
       "batch_size_50_to_100",
-      "standard_tooling"
+      "standard_tooling",
+      "precision_inspection"
     ],
     "quality_result": "passed",
     "outcome": "successful",
     "failure_reason": null,
-    "notes": "High precision machining quality, though delivery took 4 extra days.",
+    "notes": "High precision machining quality. 100% on-time delivery with full CMM report.",
     "date": "2026-03-12"
   },
   {
@@ -121,7 +122,7 @@
     "quoted_price": 1300.0,
     "actual_price": 1300.0,
     "promised_lead_time_days": 10,
-    "actual_lead_time_days": 13,
+    "actual_lead_time_days": 10,
     "conditions": [
       "batch_size_50_to_100",
       "stock_material_available"
@@ -129,7 +130,7 @@
     "quality_result": "passed",
     "outcome": "successful",
     "failure_reason": null,
-    "notes": "Excellent tolerances, minor schedule delay.",
+    "notes": "Excellent tolerances, delivered on promised date.",
     "date": "2026-04-18"
   },
   {
@@ -173,7 +174,7 @@
     "quality_result": "passed",
     "outcome": "failed",
     "failure_reason": "Small-batch delivery delay of 25 days over promised schedule.",
-    "notes": "Lowest initial quote but deprioritized small batch behind major client orders.",
+    "notes": "Lowest initial quote but deprioritized small batch behind major client production runs.",
     "date": "2026-01-10"
   },
   {
@@ -284,7 +285,29 @@
     "quality_result": "passed",
     "outcome": "successful",
     "failure_reason": null,
-    "notes": "Fast 3D printing turn-around for 20 prototypes. Limited overall history on conventional CNC.",
+    "notes": "Fast 3D printing turn-around for 20 prototypes. Insufficient historical records for conventional CNC enclosure runs.",
     "date": "2026-07-01"
+  },
+  {
+    "id": "exp_zeta_001",
+    "supplier": "Zeta Tool & Die",
+    "product": "Steel Injection Mold Insert",
+    "quantity": 10,
+    "material": "H13 Tool Steel",
+    "process": "Wire EDM & CNC Milling",
+    "finish": "Polished SPI A2",
+    "quoted_price": 4200.0,
+    "actual_price": 4200.0,
+    "promised_lead_time_days": 21,
+    "actual_lead_time_days": 21,
+    "conditions": [
+      "high_precision_tooling",
+      "hardened_steel"
+    ],
+    "quality_result": "passed",
+    "outcome": "successful",
+    "failure_reason": null,
+    "notes": "Tooling specialist. Insufficient evidence for general CNC aluminium enclosures.",
+    "date": "2026-05-15"
   }
 ]

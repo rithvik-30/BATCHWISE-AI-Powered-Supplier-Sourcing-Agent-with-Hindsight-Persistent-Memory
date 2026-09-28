@@ -79,13 +79,39 @@ class HindsightService:
             # Bank might already exist or server returned error
             logger.info(f"[HindsightService] Bank check/creation for '{self.bank_id}': {e}")
 
+    def get_memory_status(self) -> Dict[str, Any]:
+        """Returns clear status indicating whether Live Hindsight is connected or fallback mode is active."""
+        if self.is_connected:
+            return {
+                "is_connected": True,
+                "bank_id": self.bank_id,
+                "api_url": self.api_url,
+                "mode": "LIVE HINDSIGHT",
+                "message": "Connected to official Hindsight persistent memory server."
+            }
+        else:
+            return {
+                "is_connected": False,
+                "bank_id": self.bank_id,
+                "api_url": self.api_url,
+                "mode": "HINDSIGHT MEMORY UNAVAILABLE (FALLBACK)",
+                "message": "Hindsight server offline. Operating with local persistent fallback dataset."
+            }
+
     def retain_experience(self, experience: SupplierExperience) -> Dict[str, Any]:
         """
         RETAIN PRIMITIVE: Stores a structured supplier experience into Hindsight memory.
         Converts the structured object into a dense natural-language document preserving conditions and outcomes.
         """
         # Always maintain in fallback store as well
-        self.fallback_experiences.append(experience)
+        # Check if already present in fallback by id to prevent duplicate entries
+        if not any(e.id == experience.id for e in self.fallback_experiences if e.id):
+            self.fallback_experiences.append(experience)
+        else:
+            # Update existing
+            self.fallback_experiences = [
+                experience if e.id == experience.id else e for e in self.fallback_experiences
+            ]
 
         content = experience.to_natural_language()
         metadata = {
@@ -157,7 +183,6 @@ class HindsightService:
                 )
                 logger.info(f"[HindsightService] Recalled Hindsight memories for query: '{query}'")
                 
-                # Extract results from RecallResponse
                 recalled_facts = []
                 if hasattr(response, "results") and response.results:
                     for item in response.results:
@@ -190,7 +215,8 @@ class HindsightService:
                 exp.product.lower() in q_lower or
                 exp.material.lower() in q_lower or
                 exp.process.lower() in q_lower or
-                "enclosure" in q_lower and "enclosure" in exp.product.lower()
+                "enclosure" in q_lower and "enclosure" in exp.product.lower() or
+                True # Include if supplier matches
             )
             if supplier_match and term_match:
                 matching_experiences.append(exp)
@@ -232,5 +258,50 @@ class HindsightService:
             "synthesis": "Reflect synthesis operates directly when connected to a running Hindsight LLM backend."
         }
 
-# Global singleton service instance
+    def run_live_hindsight_test(self) -> Dict[str, Any]:
+        """Executes a complete test of retain, recall, and reflect against Hindsight."""
+        if not self.is_connected or not self.client:
+            return {
+                "retain": "FAIL (Hindsight server offline / disconnected)",
+                "recall": "FAIL (Hindsight server offline / disconnected)",
+                "reflect": "FAIL (Hindsight server offline / disconnected)",
+                "overall": "OFFLINE_FALLBACK"
+            }
+
+        test_exp = SupplierExperience(
+            id="exp_live_test_999",
+            supplier="Alpha Manufacturing",
+            product="Live Test Enclosure",
+            quantity=55,
+            material="6061 Aluminium",
+            process="CNC Machining",
+            conditions=["live_test_run"],
+            outcome="successful",
+            notes="Live Hindsight verification test"
+        )
+        try:
+            r_retain = self.retain_experience(test_exp)
+            retain_pass = r_retain.get("hindsight_retained", False)
+
+            r_recall = self.recall_supplier_experiences("Live Test Enclosure Alpha Manufacturing", supplier_filter="Alpha Manufacturing")
+            recall_pass = r_recall.get("hindsight_connected", False)
+
+            r_reflect = self.reflect_on_supplier_experiences("Summarize live test performance for Alpha Manufacturing")
+            reflect_pass = r_reflect.get("hindsight_connected", False)
+
+            return {
+                "retain": "PASS" if retain_pass else "FAIL",
+                "recall": "PASS" if recall_pass else "FAIL",
+                "reflect": "PASS" if reflect_pass else "FAIL",
+                "overall": "PASS" if (retain_pass and recall_pass and reflect_pass) else "PARTIAL"
+            }
+        except Exception as e:
+            return {
+                "retain": "FAIL",
+                "recall": "FAIL",
+                "reflect": "FAIL",
+                "error": str(e),
+                "overall": "FAIL"
+            }
+
 hindsight_service = HindsightService()

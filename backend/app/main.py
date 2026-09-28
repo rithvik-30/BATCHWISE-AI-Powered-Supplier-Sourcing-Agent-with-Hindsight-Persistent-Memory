@@ -1,11 +1,11 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.api.routes import health, memory, rfq
+from app.api.routes import health, memory, rfq, suppliers
 
 app = FastAPI(
     title="BATCHWISE API",
     description="Experience-Driven Supplier Sourcing Agent with Hindsight Persistent Memory",
-    version="1.0.0"
+    version="2.0.0"
 )
 
 # CORS Middleware setup
@@ -21,6 +21,7 @@ app.add_middleware(
 app.include_router(health.router)
 app.include_router(memory.router)
 app.include_router(rfq.router)
+app.include_router(suppliers.router)
 
 if __name__ == "__main__":
     import uvicorn
