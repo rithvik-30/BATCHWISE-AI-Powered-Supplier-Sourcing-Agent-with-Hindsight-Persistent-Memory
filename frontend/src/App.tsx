@@ -7,6 +7,7 @@ import {
 } from './types';
 import { analyzeRFQMulti, getMemoryStatus } from './services/api';
 import { Navbar } from './components/Navbar';
+import { LandingPage } from './components/LandingPage';
 import { RfqIntakeForm, DEMO_RFQ_ALPHA } from './components/RfqIntakeForm';
 import { SupplierCard } from './components/SupplierCard';
 import { ConditionComparisonModal } from './components/ConditionComparisonModal';
@@ -15,10 +16,11 @@ import { OutcomeRecordModal } from './components/OutcomeRecordModal';
 import { SupplierDetailModal } from './components/SupplierDetailModal';
 import { SupplierCatalogView } from './components/SupplierCatalogView';
 import { MemoryBankView } from './components/MemoryBankView';
+import { EvaluationView } from './components/EvaluationView';
 import { Brain, Cpu, Sparkles, RefreshCw } from 'lucide-react';
 
 export const App: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<'rfq' | 'suppliers' | 'memory'>('rfq');
+  const [activeTab, setActiveTab] = useState<'landing' | 'rfq' | 'suppliers' | 'memory' | 'evaluation'>('landing');
 
   // RFQ State
   const [rfq, setRfq] = useState<RFQRequest>(DEMO_RFQ_ALPHA);
@@ -70,7 +72,7 @@ export const App: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans">
+    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans selection:bg-indigo-500 selection:text-white">
       {/* Top Navigation */}
       <Navbar
         activeTab={activeTab}
@@ -79,12 +81,22 @@ export const App: React.FC = () => {
       />
 
       {/* Main Content Area */}
-      <main className="flex-1 pb-16">
+      <main className="flex-1">
+        {/* Tab 1: Product Landing Page */}
+        {activeTab === 'landing' && (
+          <LandingPage
+            onNavigateToRfq={() => setActiveTab('rfq')}
+            onNavigateToSuppliers={() => setActiveTab('suppliers')}
+            onNavigateToEvaluation={() => setActiveTab('evaluation')}
+          />
+        )}
+
+        {/* Tab 2: New RFQ Sourcing Analysis Workspace */}
         {activeTab === 'rfq' && (
-          <div className="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8 space-y-8">
+          <div className="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8 space-y-8 pb-16">
             {/* Learning Confirmation Notification */}
             {learningNotification && (
-              <div className="bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 p-4 rounded-2xl flex items-center justify-between text-xs font-semibold animate-pulse">
+              <div className="bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 p-4 rounded-2xl flex items-center justify-between text-xs font-semibold animate-pulse shadow-sm">
                 <div className="flex items-center gap-2">
                   <Sparkles className="w-5 h-5 text-emerald-400" />
                   <span>{learningNotification}</span>
@@ -131,7 +143,7 @@ export const App: React.FC = () => {
                   </div>
 
                   <p className="text-xs text-slate-400 leading-relaxed">
-                    Supplier capability is not static profile data. It is defined by <strong className="text-slate-200">Supplier × Requirement × Operating Conditions → Outcome</strong>. BATCHWISE recalls previous RFQs, tooling fees, and stock material availability to determine whether a supplier is <strong className="text-emerald-400">FEASIBLE</strong>, <strong className="text-amber-400">CONDITIONAL</strong>, or has <strong className="text-slate-400">INSUFFICIENT EVIDENCE</strong>.
+                    Supplier capability is defined by <strong className="text-slate-200">Supplier × Requirement × Operating Conditions → Outcome</strong>. BATCHWISE recalls previous RFQs, tooling fees, and stock material availability to determine whether a supplier is <strong className="text-emerald-400">FEASIBLE</strong>, <strong className="text-amber-400">CONDITIONAL</strong>, or has <strong className="text-slate-400">INSUFFICIENT EVIDENCE</strong>.
                   </p>
                 </div>
 
@@ -194,11 +206,26 @@ export const App: React.FC = () => {
           </div>
         )}
 
-        {/* Tab 2: Supplier Catalog View */}
-        {activeTab === 'suppliers' && <SupplierCatalogView />}
+        {/* Tab 3: Supplier Catalog View */}
+        {activeTab === 'suppliers' && (
+          <div className="pb-16">
+            <SupplierCatalogView />
+          </div>
+        )}
 
-        {/* Tab 3: Experience Memory Bank View */}
-        {activeTab === 'memory' && <MemoryBankView />}
+        {/* Tab 4: Experience Memory Bank View */}
+        {activeTab === 'memory' && (
+          <div className="pb-16">
+            <MemoryBankView />
+          </div>
+        )}
+
+        {/* Tab 5: Benchmark Evaluation View */}
+        {activeTab === 'evaluation' && (
+          <div className="pb-16">
+            <EvaluationView />
+          </div>
+        )}
       </main>
 
       {/* Modals & Expandable Drawers */}
