@@ -16,6 +16,7 @@ class RFQRequest(BaseModel):
     target_supplier: Optional[str] = Field(default=None, description="Optional target supplier to evaluate specifically")
     quality_requirements: Optional[str] = Field(default=None, description="Quality or inspection requirements")
     additional_requirements: Optional[str] = Field(default=None, description="Additional tooling or packaging specs")
+    analysis_mode: Optional[str] = Field(default="memory_aware", description="Analysis mode: 'memory_aware' or 'baseline' (memory-blind)")
 
 class EvidenceItem(BaseModel):
     """
@@ -56,6 +57,7 @@ class SupplierEvaluation(BaseModel):
     last_known_outcome: Optional[str] = None
     decision_changing_condition: Optional[str] = None
     comparison: Optional[ConditionComparison] = None
+    memory_value: List[str] = Field(default_factory=list, description="Specific value contributions added by persistent memory over baseline")
 
 class HindsightStatus(BaseModel):
     """

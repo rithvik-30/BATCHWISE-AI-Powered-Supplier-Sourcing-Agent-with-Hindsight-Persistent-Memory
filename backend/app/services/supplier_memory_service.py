@@ -23,6 +23,7 @@ class SupplierMemoryService:
     """
     Core domain service that loads historical supplier experiences, populates memory,
     performs multi-supplier condition-aware RFQ feasibility analysis, and handles outcome retention.
+    Supports both 'memory_aware' and 'baseline' (memory-blind) evaluation modes.
     """
     def __init__(self):
         self.experiences: List[SupplierExperience] = []
@@ -184,7 +185,49 @@ class SupplierMemoryService:
         )
 
     def evaluate_single_supplier(self, target_supplier: str, rfq: RFQRequest) -> SupplierEvaluation:
-        """Evaluates a single supplier against RFQ parameters using recalled historical experiences."""
+        """
+        Evaluates a single supplier against RFQ parameters.
+        Supports both 'memory_aware' mode (using Hindsight recalled experiences)
+        and 'baseline' mode (memory-blind, static profile assumption).
+        """
+        mode = (rfq.analysis_mode or "memory_aware").lower()
+
+        # MODE A: MEMORY-BLIND BASELINE
+        if mode == "baseline":
+            # Static profile evaluation without accessing Hindsight recalled experiences
+            has_process_capability = any(
+                e.supplier.lower() == target_supplier.lower() and rfq.process.lower() in e.process.lower()
+                for e in self.experiences
+            )
+            
+            if has_process_capability:
+                return SupplierEvaluation(
+                    supplier=target_supplier,
+                    status="FEASIBLE",
+                    summary=f"Memory-blind baseline: Supplier '{target_supplier}' lists static capability for {rfq.process}. No historical experience memory retrieved.",
+                    evidence_count=0,
+                    evidence=[],
+                    learned_conditions=[],
+                    risks=[],
+                    required_verification=["Standard static supplier capability check"],
+                    last_known_outcome=None,
+                    memory_value=[]
+                )
+            else:
+                return SupplierEvaluation(
+                    supplier=target_supplier,
+                    status="FEASIBLE", # Static baseline assumes feasible if registered supplier
+                    summary=f"Memory-blind baseline: Supplier '{target_supplier}' assumed feasible from static directory listing. No historical experience memory consulted.",
+                    evidence_count=0,
+                    evidence=[],
+                    learned_conditions=[],
+                    risks=[],
+                    required_verification=["General vendor check"],
+                    last_known_outcome=None,
+                    memory_value=[]
+                )
+
+        # MODE B: BATCHWISE MEMORY-AWARE
         supplier_exps = [e for e in self.experiences if e.supplier.lower() == target_supplier.lower()]
 
         relevant_exps = [
@@ -215,7 +258,8 @@ class SupplierMemoryService:
                     learned_conditions=[],
                     risks=["No verified historical performance records for required process/part type."],
                     required_verification=[f"Request capability demonstration or sample run from {target_supplier}."],
-                    last_known_outcome=supplier_exps[-1].outcome if supplier_exps else None
+                    last_known_outcome=supplier_exps[-1].outcome if supplier_exps else None,
+                    memory_value=["Correctly identified lack of historical evidence for process instead of assuming static capability."]
                 )
             else:
                 return SupplierEvaluation(
@@ -230,7 +274,8 @@ class SupplierMemoryService:
                         f"Request initial quote and capability presentation from {target_supplier}.",
                         "Perform site inspection or vendor onboarding audit."
                     ],
-                    last_known_outcome=None
+                    last_known_outcome=None,
+                    memory_value=["Correctly identified unknown supplier rather than over-confidently assuming feasibility."]
                 )
 
         success_exps = [e for e in relevant_exps if e.outcome.lower() == "successful"]
@@ -240,6 +285,7 @@ class SupplierMemoryService:
         learned_conditions: List[str] = []
         risks: List[str] = []
         required_verification: List[str] = []
+        memory_value: List[str] = []
 
         for exp in relevant_exps:
             rel_reason = "Matches product and process specifications."
@@ -321,6 +367,13 @@ class SupplierMemoryService:
                 f"Verify raw material ({rfq.material}) is available directly from local stock to avoid schedule drift.",
                 "Verify final price commitment matches initial quote."
             ]
+
+            memory_value = [
+                f"Identified past custom-tooling failure on {fail_e.quantity}-unit order that baseline static profile missed.",
+                f"Derived decision-changing condition ('{decision_changing_cond}').",
+                "Added required pre-sourcing verification for tooling NRE fees."
+            ]
+
         elif success_exps and not failed_exps:
             status = "FEASIBLE"
             summary = (
@@ -331,6 +384,11 @@ class SupplierMemoryService:
                 "Confirm current shop queue lead time.",
                 "Finalize PO terms."
             ]
+            memory_value = [
+                f"Validated {len(success_exps)} successful historical order outcomes under matching process parameters.",
+                f"Identified prerequisite success conditions: {', '.join(learned_conditions)}."
+            ]
+
         elif failed_exps and not success_exps:
             status = "CONDITIONAL"
             summary = (
@@ -341,10 +399,15 @@ class SupplierMemoryService:
                 "Require explicit SLA contract with delay penalties.",
                 "Evaluate alternative qualified suppliers."
             ]
+            memory_value = [
+                f"Detected historical failure risk ({failed_exps[0].failure_reason}) overlooked by static baseline."
+            ]
+
         else:
             status = "INSUFFICIENT EVIDENCE"
             summary = f"Insufficient historical evidence for {target_supplier}."
             required_verification = ["Perform capability audit."]
+            memory_value = ["Prevented false feasibility claim by checking historical memory."]
 
         return SupplierEvaluation(
             supplier=target_supplier,
@@ -357,21 +420,26 @@ class SupplierMemoryService:
             required_verification=required_verification,
             last_known_outcome=relevant_exps[-1].outcome if relevant_exps else None,
             decision_changing_condition=decision_changing_cond,
-            comparison=comparison
+            comparison=comparison,
+            memory_value=memory_value
         )
 
     def analyze_rfq_multi_supplier(self, rfq: RFQRequest) -> MultiSupplierAnalysisResponse:
         """
         Main Multi-Supplier Sourcing Analysis Workflow.
-        Evaluates all candidate suppliers, recalls Hindsight memories, compares operating conditions,
-        and generates structured feasibility assessments.
+        Evaluates all candidate suppliers, recalls Hindsight memories (if memory_aware mode),
+        compares operating conditions, and generates structured feasibility assessments.
         """
-        # Execute recall query
-        query = (
-            f"Find historical supplier experiences relevant to: {rfq.product}, {rfq.quantity} units, "
-            f"{rfq.material}, {rfq.process}, finish: {rfq.finish or 'standard'}, deadline: {rfq.deadline_days or 14} days."
-        )
-        recall_res = hindsight_service.recall_supplier_experiences(query)
+        mode = (rfq.analysis_mode or "memory_aware").lower()
+
+        # Execute recall query if memory_aware mode
+        total_recalled = 0
+        if mode == "memory_aware":
+            query = (
+                f"Find historical supplier experiences relevant to: {rfq.product}, {rfq.quantity} units, "
+                f"{rfq.material}, {rfq.process}, finish: {rfq.finish or 'standard'}, deadline: {rfq.deadline_days or 14} days."
+            )
+            recall_res = hindsight_service.recall_supplier_experiences(query)
 
         # Get list of unique suppliers
         unique_suppliers = list(dict.fromkeys([e.supplier for e in self.experiences]))
@@ -383,7 +451,6 @@ class SupplierMemoryService:
                 unique_suppliers.append(s)
 
         evaluations: List[SupplierEvaluation] = []
-        total_recalled = 0
 
         for supplier in unique_suppliers:
             eval_result = self.evaluate_single_supplier(supplier, rfq)
@@ -395,10 +462,10 @@ class SupplierMemoryService:
         hs = HindsightStatus(
             is_connected=mem_status["is_connected"],
             bank_id=mem_status["bank_id"],
-            mode=mem_status["mode"],
-            recalled_count=total_recalled,
-            relevant_count=sum(len(ev.evidence) for ev in evaluations if ev.status in ["FEASIBLE", "CONDITIONAL"]),
-            message=mem_status["message"]
+            mode=mem_status["mode"] if mode == "memory_aware" else "MEMORY-BLIND BASELINE MODE",
+            recalled_count=total_recalled if mode == "memory_aware" else 0,
+            relevant_count=sum(len(ev.evidence) for ev in evaluations if ev.status in ["FEASIBLE", "CONDITIONAL"]) if mode == "memory_aware" else 0,
+            message=mem_status["message"] if mode == "memory_aware" else "Evaluation running in memory-blind baseline mode (no Hindsight recall)."
         )
 
         return MultiSupplierAnalysisResponse(

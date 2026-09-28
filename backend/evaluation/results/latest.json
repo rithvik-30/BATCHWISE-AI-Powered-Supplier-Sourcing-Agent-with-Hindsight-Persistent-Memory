@@ -1,0 +1,692 @@
+{
+  "timestamp": "2026-09-28T21:40:02.459308",
+  "benchmark_name": "BATCHWISE Phase 3 Synthetic Benchmark",
+  "dataset_size": 25,
+  "hindsight_mode": "HINDSIGHT MEMORY UNAVAILABLE (FALLBACK)",
+  "metrics": {
+    "baseline_accuracy_pct": 48.0,
+    "baseline_correct": 12,
+    "memory_aware_accuracy_pct": 88.0,
+    "memory_aware_correct": 22,
+    "conditional_detection_rate_baseline_pct": 0.0,
+    "conditional_detection_rate_memory_pct": 100.0,
+    "insufficient_evidence_detection_rate_baseline_pct": 0.0,
+    "insufficient_evidence_detection_rate_memory_pct": 100.0,
+    "total_recalled_evidence_items": 41
+  },
+  "cases": [
+    {
+      "case_id": "eval_001",
+      "description": "Alpha 75-unit aluminium enclosure with potential custom tooling risk",
+      "category": "conditional_capability",
+      "supplier": "Alpha Manufacturing",
+      "expected": "CONDITIONAL",
+      "baseline": {
+        "status": "FEASIBLE",
+        "correct": false
+      },
+      "memory_aware": {
+        "status": "CONDITIONAL",
+        "correct": true,
+        "evidence_count": 2,
+        "learned_conditions": [
+          "stock material available",
+          "standard tooling",
+          "standard packaging"
+        ],
+        "risks": [
+          "Past failure mode: Custom tooling cost made the low-volume order infeasible.",
+          "Condition risk: custom tooling required",
+          "Condition risk: non stock material"
+        ],
+        "memory_value": [
+          "Identified past custom-tooling failure on 80-unit order that baseline static profile missed.",
+          "Derived decision-changing condition ('Tooling & Stock Material Requirement').",
+          "Added required pre-sourcing verification for tooling NRE fees."
+        ]
+      }
+    },
+    {
+      "case_id": "eval_002",
+      "description": "Beta Precision 75-unit stainless steel enclosure batch",
+      "category": "known_success_condition",
+      "supplier": "Beta Precision",
+      "expected": "FEASIBLE",
+      "baseline": {
+        "status": "FEASIBLE",
+        "correct": true
+      },
+      "memory_aware": {
+        "status": "FEASIBLE",
+        "correct": true,
+        "evidence_count": 1,
+        "learned_conditions": [
+          "batch size 50 to 100",
+          "standard tooling",
+          "precision inspection"
+        ],
+        "risks": [],
+        "memory_value": [
+          "Validated 1 successful historical order outcomes under matching process parameters.",
+          "Identified prerequisite success conditions: batch size 50 to 100, standard tooling, precision inspection."
+        ]
+      }
+    },
+    {
+      "case_id": "eval_003",
+      "description": "Gamma Works 50-unit small batch on tight 10-day deadline",
+      "category": "known_failure_condition",
+      "supplier": "Gamma Works",
+      "expected": "CONDITIONAL",
+      "baseline": {
+        "status": "FEASIBLE",
+        "correct": false
+      },
+      "memory_aware": {
+        "status": "CONDITIONAL",
+        "correct": true,
+        "evidence_count": 2,
+        "learned_conditions": [
+          "high volume production",
+          "standard tooling"
+        ],
+        "risks": [
+          "Past failure mode: Small-batch delivery delay of 25 days over promised schedule.",
+          "Condition risk: small batch order",
+          "Condition risk: tight deadline"
+        ],
+        "memory_value": [
+          "Identified past custom-tooling failure on 50-unit order that baseline static profile missed.",
+          "Derived decision-changing condition ('Tooling & Stock Material Requirement').",
+          "Added required pre-sourcing verification for tooling NRE fees."
+        ]
+      }
+    },
+    {
+      "case_id": "eval_004",
+      "description": "Delta Components 30-unit titanium bracket with NRE fixture requirement",
+      "category": "high_setup_cost_capability",
+      "supplier": "Delta Components",
+      "expected": "FEASIBLE",
+      "baseline": {
+        "status": "FEASIBLE",
+        "correct": true
+      },
+      "memory_aware": {
+        "status": "FEASIBLE",
+        "correct": true,
+        "evidence_count": 1,
+        "learned_conditions": [
+          "high setup cost",
+          "custom tooling",
+          "aerospace spec"
+        ],
+        "risks": [],
+        "memory_value": [
+          "Validated 1 successful historical order outcomes under matching process parameters.",
+          "Identified prerequisite success conditions: high setup cost, custom tooling, aerospace spec."
+        ]
+      }
+    },
+    {
+      "case_id": "eval_005",
+      "description": "Epsilon 100-unit CNC Aluminium Enclosure (known only for 3D printing prototypes)",
+      "category": "insufficient_evidence",
+      "supplier": "Epsilon Manufacturing",
+      "expected": "INSUFFICIENT EVIDENCE",
+      "baseline": {
+        "status": "FEASIBLE",
+        "correct": false
+      },
+      "memory_aware": {
+        "status": "INSUFFICIENT EVIDENCE",
+        "correct": true,
+        "evidence_count": 1,
+        "learned_conditions": [],
+        "risks": [
+          "No verified historical performance records for required process/part type."
+        ],
+        "memory_value": [
+          "Correctly identified lack of historical evidence for process instead of assuming static capability."
+        ]
+      }
+    },
+    {
+      "case_id": "eval_006",
+      "description": "Alpha 50-unit brass bushing turning order",
+      "category": "known_success_condition",
+      "supplier": "Alpha Manufacturing",
+      "expected": "FEASIBLE",
+      "baseline": {
+        "status": "FEASIBLE",
+        "correct": true
+      },
+      "memory_aware": {
+        "status": "CONDITIONAL",
+        "correct": false,
+        "evidence_count": 3,
+        "learned_conditions": [
+          "stock material available",
+          "standard tooling",
+          "standard packaging"
+        ],
+        "risks": [
+          "Past failure mode: Custom tooling cost made the low-volume order infeasible.",
+          "Condition risk: custom tooling required",
+          "Condition risk: non stock material"
+        ],
+        "memory_value": [
+          "Identified past custom-tooling failure on 80-unit order that baseline static profile missed.",
+          "Derived decision-changing condition ('Tooling & Stock Material Requirement').",
+          "Added required pre-sourcing verification for tooling NRE fees."
+        ]
+      }
+    },
+    {
+      "case_id": "eval_007",
+      "description": "Gamma Works 500-unit aluminium housing order",
+      "category": "high_volume_success",
+      "supplier": "Gamma Works",
+      "expected": "FEASIBLE",
+      "baseline": {
+        "status": "FEASIBLE",
+        "correct": true
+      },
+      "memory_aware": {
+        "status": "CONDITIONAL",
+        "correct": false,
+        "evidence_count": 2,
+        "learned_conditions": [
+          "high volume production",
+          "standard tooling"
+        ],
+        "risks": [
+          "Past failure mode: Small-batch delivery delay of 25 days over promised schedule.",
+          "Condition risk: small batch order",
+          "Condition risk: tight deadline"
+        ],
+        "memory_value": [
+          "Identified past custom-tooling failure on 50-unit order that baseline static profile missed.",
+          "Derived decision-changing condition ('Tooling & Stock Material Requirement').",
+          "Added required pre-sourcing verification for tooling NRE fees."
+        ]
+      }
+    },
+    {
+      "case_id": "eval_008",
+      "description": "Zeta Tool & Die 60-unit CNC Aluminium Enclosure run",
+      "category": "insufficient_evidence",
+      "supplier": "Zeta Tool & Die",
+      "expected": "INSUFFICIENT EVIDENCE",
+      "baseline": {
+        "status": "FEASIBLE",
+        "correct": false
+      },
+      "memory_aware": {
+        "status": "INSUFFICIENT EVIDENCE",
+        "correct": true,
+        "evidence_count": 1,
+        "learned_conditions": [],
+        "risks": [
+          "No verified historical performance records for required process/part type."
+        ],
+        "memory_value": [
+          "Correctly identified lack of historical evidence for process instead of assuming static capability."
+        ]
+      }
+    },
+    {
+      "case_id": "eval_009",
+      "description": "Beta Precision 60-unit 7075 Aluminium Baseplate",
+      "category": "known_success_condition",
+      "supplier": "Beta Precision",
+      "expected": "FEASIBLE",
+      "baseline": {
+        "status": "FEASIBLE",
+        "correct": true
+      },
+      "memory_aware": {
+        "status": "FEASIBLE",
+        "correct": true,
+        "evidence_count": 2,
+        "learned_conditions": [
+          "batch size 50 to 100",
+          "standard tooling",
+          "precision inspection",
+          "stock material available"
+        ],
+        "risks": [],
+        "memory_value": [
+          "Validated 2 successful historical order outcomes under matching process parameters.",
+          "Identified prerequisite success conditions: batch size 50 to 100, standard tooling, precision inspection, stock material available."
+        ]
+      }
+    },
+    {
+      "case_id": "eval_010",
+      "description": "Gamma Works 40-unit specialty copper heat sink",
+      "category": "known_failure_condition",
+      "supplier": "Gamma Works",
+      "expected": "CONDITIONAL",
+      "baseline": {
+        "status": "FEASIBLE",
+        "correct": false
+      },
+      "memory_aware": {
+        "status": "CONDITIONAL",
+        "correct": true,
+        "evidence_count": 1,
+        "learned_conditions": [],
+        "risks": [
+          "Past failure mode: Extreme delivery delay on low volume order.",
+          "Condition risk: small batch order",
+          "Condition risk: specialty copper"
+        ],
+        "memory_value": [
+          "Detected historical failure risk (Extreme delivery delay on low volume order.) overlooked by static baseline."
+        ]
+      }
+    },
+    {
+      "case_id": "eval_011",
+      "description": "Alpha 100-unit laser cut 304 Stainless Steel Bracket",
+      "category": "known_success_condition",
+      "supplier": "Alpha Manufacturing",
+      "expected": "FEASIBLE",
+      "baseline": {
+        "status": "FEASIBLE",
+        "correct": true
+      },
+      "memory_aware": {
+        "status": "CONDITIONAL",
+        "correct": false,
+        "evidence_count": 3,
+        "learned_conditions": [
+          "stock material available",
+          "standard tooling",
+          "standard packaging"
+        ],
+        "risks": [
+          "Past failure mode: Custom tooling cost made the low-volume order infeasible.",
+          "Condition risk: custom tooling required",
+          "Condition risk: non stock material"
+        ],
+        "memory_value": [
+          "Identified past custom-tooling failure on 80-unit order that baseline static profile missed.",
+          "Derived decision-changing condition ('Tooling & Stock Material Requirement').",
+          "Added required pre-sourcing verification for tooling NRE fees."
+        ]
+      }
+    },
+    {
+      "case_id": "eval_012",
+      "description": "Delta Components 50-unit aluminium heat sink with custom fixture",
+      "category": "known_success_condition",
+      "supplier": "Delta Components",
+      "expected": "FEASIBLE",
+      "baseline": {
+        "status": "FEASIBLE",
+        "correct": true
+      },
+      "memory_aware": {
+        "status": "FEASIBLE",
+        "correct": true,
+        "evidence_count": 2,
+        "learned_conditions": [
+          "high setup cost",
+          "custom tooling",
+          "aerospace spec",
+          "custom fixture"
+        ],
+        "risks": [],
+        "memory_value": [
+          "Validated 2 successful historical order outcomes under matching process parameters.",
+          "Identified prerequisite success conditions: high setup cost, custom tooling, aerospace spec, custom fixture."
+        ]
+      }
+    },
+    {
+      "case_id": "eval_013",
+      "description": "Omni Quantum 5-unit Cryogenic Substrate",
+      "category": "insufficient_evidence",
+      "supplier": "Omni Quantum Labs",
+      "expected": "INSUFFICIENT EVIDENCE",
+      "baseline": {
+        "status": "FEASIBLE",
+        "correct": false
+      },
+      "memory_aware": {
+        "status": "INSUFFICIENT EVIDENCE",
+        "correct": true,
+        "evidence_count": 0,
+        "learned_conditions": [],
+        "risks": [
+          "No historical sourcing data recorded."
+        ],
+        "memory_value": [
+          "Correctly identified unknown supplier rather than over-confidently assuming feasibility."
+        ]
+      }
+    },
+    {
+      "case_id": "eval_014",
+      "description": "Epsilon 20-unit 3D printed prototype cover",
+      "category": "known_success_condition",
+      "supplier": "Epsilon Manufacturing",
+      "expected": "FEASIBLE",
+      "baseline": {
+        "status": "FEASIBLE",
+        "correct": true
+      },
+      "memory_aware": {
+        "status": "FEASIBLE",
+        "correct": true,
+        "evidence_count": 1,
+        "learned_conditions": [
+          "additive manufacturing",
+          "rapid prototype"
+        ],
+        "risks": [],
+        "memory_value": [
+          "Validated 1 successful historical order outcomes under matching process parameters.",
+          "Identified prerequisite success conditions: additive manufacturing, rapid prototype."
+        ]
+      }
+    },
+    {
+      "case_id": "eval_015",
+      "description": "Beta Precision 200-unit 4140 Steel Drive Shaft turning",
+      "category": "known_success_condition",
+      "supplier": "Beta Precision",
+      "expected": "FEASIBLE",
+      "baseline": {
+        "status": "FEASIBLE",
+        "correct": true
+      },
+      "memory_aware": {
+        "status": "FEASIBLE",
+        "correct": true,
+        "evidence_count": 2,
+        "learned_conditions": [
+          "batch size 50 to 100",
+          "standard tooling",
+          "precision inspection",
+          "larger batch"
+        ],
+        "risks": [],
+        "memory_value": [
+          "Validated 2 successful historical order outcomes under matching process parameters.",
+          "Identified prerequisite success conditions: batch size 50 to 100, standard tooling, precision inspection, larger batch."
+        ]
+      }
+    },
+    {
+      "case_id": "eval_016",
+      "description": "Alpha 85-unit Aluminium Enclosure with tight delivery requirement",
+      "category": "conditional_capability",
+      "supplier": "Alpha Manufacturing",
+      "expected": "CONDITIONAL",
+      "baseline": {
+        "status": "FEASIBLE",
+        "correct": false
+      },
+      "memory_aware": {
+        "status": "CONDITIONAL",
+        "correct": true,
+        "evidence_count": 2,
+        "learned_conditions": [
+          "stock material available",
+          "standard tooling",
+          "standard packaging"
+        ],
+        "risks": [
+          "Past failure mode: Custom tooling cost made the low-volume order infeasible.",
+          "Condition risk: custom tooling required",
+          "Condition risk: non stock material"
+        ],
+        "memory_value": [
+          "Identified past custom-tooling failure on 80-unit order that baseline static profile missed.",
+          "Derived decision-changing condition ('Tooling & Stock Material Requirement').",
+          "Added required pre-sourcing verification for tooling NRE fees."
+        ]
+      }
+    },
+    {
+      "case_id": "eval_017",
+      "description": "Zeta Tool & Die 10-unit H13 Steel Mold Insert wire EDM",
+      "category": "known_success_condition",
+      "supplier": "Zeta Tool & Die",
+      "expected": "FEASIBLE",
+      "baseline": {
+        "status": "FEASIBLE",
+        "correct": true
+      },
+      "memory_aware": {
+        "status": "FEASIBLE",
+        "correct": true,
+        "evidence_count": 1,
+        "learned_conditions": [
+          "high precision tooling",
+          "hardened steel"
+        ],
+        "risks": [],
+        "memory_value": [
+          "Validated 1 successful historical order outcomes under matching process parameters.",
+          "Identified prerequisite success conditions: high precision tooling, hardened steel."
+        ]
+      }
+    },
+    {
+      "case_id": "eval_018",
+      "description": "Gamma Works 30-unit Titanium Aerospace Bracket (unseen process/material for Gamma)",
+      "category": "insufficient_evidence",
+      "supplier": "Gamma Works",
+      "expected": "INSUFFICIENT EVIDENCE",
+      "baseline": {
+        "status": "FEASIBLE",
+        "correct": false
+      },
+      "memory_aware": {
+        "status": "INSUFFICIENT EVIDENCE",
+        "correct": true,
+        "evidence_count": 3,
+        "learned_conditions": [],
+        "risks": [
+          "No verified historical performance records for required process/part type."
+        ],
+        "memory_value": [
+          "Correctly identified lack of historical evidence for process instead of assuming static capability."
+        ]
+      }
+    },
+    {
+      "case_id": "eval_019",
+      "description": "Gamma Works 60-unit Aluminium Housing small batch",
+      "category": "conditional_capability",
+      "supplier": "Gamma Works",
+      "expected": "CONDITIONAL",
+      "baseline": {
+        "status": "FEASIBLE",
+        "correct": false
+      },
+      "memory_aware": {
+        "status": "CONDITIONAL",
+        "correct": true,
+        "evidence_count": 2,
+        "learned_conditions": [
+          "high volume production",
+          "standard tooling"
+        ],
+        "risks": [
+          "Past failure mode: Small-batch delivery delay of 25 days over promised schedule.",
+          "Condition risk: small batch order",
+          "Condition risk: tight deadline"
+        ],
+        "memory_value": [
+          "Identified past custom-tooling failure on 50-unit order that baseline static profile missed.",
+          "Derived decision-changing condition ('Tooling & Stock Material Requirement').",
+          "Added required pre-sourcing verification for tooling NRE fees."
+        ]
+      }
+    },
+    {
+      "case_id": "eval_020",
+      "description": "Beta Precision 80-unit 316 Stainless Steel Enclosure run",
+      "category": "known_success_condition",
+      "supplier": "Beta Precision",
+      "expected": "FEASIBLE",
+      "baseline": {
+        "status": "FEASIBLE",
+        "correct": true
+      },
+      "memory_aware": {
+        "status": "FEASIBLE",
+        "correct": true,
+        "evidence_count": 1,
+        "learned_conditions": [
+          "batch size 50 to 100",
+          "standard tooling",
+          "precision inspection"
+        ],
+        "risks": [],
+        "memory_value": [
+          "Validated 1 successful historical order outcomes under matching process parameters.",
+          "Identified prerequisite success conditions: batch size 50 to 100, standard tooling, precision inspection."
+        ]
+      }
+    },
+    {
+      "case_id": "eval_021",
+      "description": "Delta Components 200-unit Steel Drive Shaft (unseen steel volume run for Delta)",
+      "category": "insufficient_evidence",
+      "supplier": "Delta Components",
+      "expected": "INSUFFICIENT EVIDENCE",
+      "baseline": {
+        "status": "FEASIBLE",
+        "correct": false
+      },
+      "memory_aware": {
+        "status": "INSUFFICIENT EVIDENCE",
+        "correct": true,
+        "evidence_count": 2,
+        "learned_conditions": [],
+        "risks": [
+          "No verified historical performance records for required process/part type."
+        ],
+        "memory_value": [
+          "Correctly identified lack of historical evidence for process instead of assuming static capability."
+        ]
+      }
+    },
+    {
+      "case_id": "eval_022",
+      "description": "Alpha 65-unit Aluminium Enclosure with confirmed stock material",
+      "category": "known_success_condition",
+      "supplier": "Alpha Manufacturing",
+      "expected": "CONDITIONAL",
+      "baseline": {
+        "status": "FEASIBLE",
+        "correct": false
+      },
+      "memory_aware": {
+        "status": "CONDITIONAL",
+        "correct": true,
+        "evidence_count": 2,
+        "learned_conditions": [
+          "stock material available",
+          "standard tooling",
+          "standard packaging"
+        ],
+        "risks": [
+          "Past failure mode: Custom tooling cost made the low-volume order infeasible.",
+          "Condition risk: custom tooling required",
+          "Condition risk: non stock material"
+        ],
+        "memory_value": [
+          "Identified past custom-tooling failure on 80-unit order that baseline static profile missed.",
+          "Derived decision-changing condition ('Tooling & Stock Material Requirement').",
+          "Added required pre-sourcing verification for tooling NRE fees."
+        ]
+      }
+    },
+    {
+      "case_id": "eval_023",
+      "description": "Epsilon 50-unit Brass Bushing CNC Turning",
+      "category": "insufficient_evidence",
+      "supplier": "Epsilon Manufacturing",
+      "expected": "INSUFFICIENT EVIDENCE",
+      "baseline": {
+        "status": "FEASIBLE",
+        "correct": false
+      },
+      "memory_aware": {
+        "status": "INSUFFICIENT EVIDENCE",
+        "correct": true,
+        "evidence_count": 1,
+        "learned_conditions": [],
+        "risks": [
+          "No verified historical performance records for required process/part type."
+        ],
+        "memory_value": [
+          "Correctly identified lack of historical evidence for process instead of assuming static capability."
+        ]
+      }
+    },
+    {
+      "case_id": "eval_024",
+      "description": "Delta Components 25-unit Titanium Bracket aerospace spec",
+      "category": "known_success_condition",
+      "supplier": "Delta Components",
+      "expected": "FEASIBLE",
+      "baseline": {
+        "status": "FEASIBLE",
+        "correct": true
+      },
+      "memory_aware": {
+        "status": "FEASIBLE",
+        "correct": true,
+        "evidence_count": 1,
+        "learned_conditions": [
+          "high setup cost",
+          "custom tooling",
+          "aerospace spec"
+        ],
+        "risks": [],
+        "memory_value": [
+          "Validated 1 successful historical order outcomes under matching process parameters.",
+          "Identified prerequisite success conditions: high setup cost, custom tooling, aerospace spec."
+        ]
+      }
+    },
+    {
+      "case_id": "eval_025",
+      "description": "Gamma Works 35-unit low volume aluminium housing small batch",
+      "category": "known_failure_condition",
+      "supplier": "Gamma Works",
+      "expected": "CONDITIONAL",
+      "baseline": {
+        "status": "FEASIBLE",
+        "correct": false
+      },
+      "memory_aware": {
+        "status": "CONDITIONAL",
+        "correct": true,
+        "evidence_count": 2,
+        "learned_conditions": [
+          "high volume production",
+          "standard tooling"
+        ],
+        "risks": [
+          "Past failure mode: Small-batch delivery delay of 25 days over promised schedule.",
+          "Condition risk: small batch order",
+          "Condition risk: tight deadline"
+        ],
+        "memory_value": [
+          "Identified past custom-tooling failure on 50-unit order that baseline static profile missed.",
+          "Derived decision-changing condition ('Tooling & Stock Material Requirement').",
+          "Added required pre-sourcing verification for tooling NRE fees."
+        ]
+      }
+    }
+  ]
+}

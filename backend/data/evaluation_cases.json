@@ -1,0 +1,477 @@
+[
+  {
+    "case_id": "eval_001",
+    "category": "conditional_capability",
+    "description": "Alpha 75-unit aluminium enclosure with potential custom tooling risk",
+    "rfq": {
+      "product": "Aluminium Enclosure",
+      "quantity": 75,
+      "material": "6061 Aluminium",
+      "process": "CNC Machining",
+      "finish": "Black Anodized",
+      "deadline_days": 14
+    },
+    "supplier": "Alpha Manufacturing",
+    "expected_classification": "CONDITIONAL",
+    "expected_conditions": ["stock_material_available", "standard_tooling"],
+    "expected_risks": ["custom tooling setup costs on low volume"],
+    "expected_verification": ["Confirm tooling requirements prior to PO"],
+    "supporting_experience_ids": ["exp_alpha_001", "exp_alpha_002"]
+  },
+  {
+    "case_id": "eval_002",
+    "category": "known_success_condition",
+    "description": "Beta Precision 75-unit stainless steel enclosure batch",
+    "rfq": {
+      "product": "Stainless Steel Enclosure",
+      "quantity": 75,
+      "material": "316 Stainless Steel",
+      "process": "CNC Machining",
+      "finish": "Passivated",
+      "deadline_days": 14
+    },
+    "supplier": "Beta Precision",
+    "expected_classification": "FEASIBLE",
+    "expected_conditions": ["batch_size_50_to_100", "standard_tooling"],
+    "expected_risks": [],
+    "expected_verification": ["Confirm current shop queue lead time"],
+    "supporting_experience_ids": ["exp_beta_001"]
+  },
+  {
+    "case_id": "eval_003",
+    "category": "known_failure_condition",
+    "description": "Gamma Works 50-unit small batch on tight 10-day deadline",
+    "rfq": {
+      "product": "Aluminium Housing",
+      "quantity": 50,
+      "material": "6061 Aluminium",
+      "process": "CNC Machining",
+      "finish": "Powder Coated",
+      "deadline_days": 10
+    },
+    "supplier": "Gamma Works",
+    "expected_classification": "CONDITIONAL",
+    "expected_conditions": ["high_volume_production"],
+    "expected_risks": ["Small-batch delivery delay of 25 days over schedule"],
+    "expected_verification": ["Require SLA contract with delay penalties"],
+    "supporting_experience_ids": ["exp_gamma_001"]
+  },
+  {
+    "case_id": "eval_004",
+    "category": "high_setup_cost_capability",
+    "description": "Delta Components 30-unit titanium bracket with NRE fixture requirement",
+    "rfq": {
+      "product": "Titanium Aerospace Bracket",
+      "quantity": 30,
+      "material": "Ti-6Al-4V Titanium",
+      "process": "5-Axis CNC Machining",
+      "finish": "Anodized Type II",
+      "deadline_days": 14
+    },
+    "supplier": "Delta Components",
+    "expected_classification": "FEASIBLE",
+    "expected_conditions": ["high_setup_cost", "aerospace_spec"],
+    "expected_risks": ["High NRE fixture cost"],
+    "expected_verification": ["Verify setup fee in quote"],
+    "supporting_experience_ids": ["exp_delta_001"]
+  },
+  {
+    "case_id": "eval_005",
+    "category": "insufficient_evidence",
+    "description": "Epsilon 100-unit CNC Aluminium Enclosure (known only for 3D printing prototypes)",
+    "rfq": {
+      "product": "Aluminium Enclosure",
+      "quantity": 100,
+      "material": "6061 Aluminium",
+      "process": "CNC Machining",
+      "finish": "Black Anodized",
+      "deadline_days": 14
+    },
+    "supplier": "Epsilon Manufacturing",
+    "expected_classification": "INSUFFICIENT EVIDENCE",
+    "expected_conditions": [],
+    "expected_risks": ["No historical record for conventional CNC machining"],
+    "expected_verification": ["Request initial quote and sample demonstration"],
+    "supporting_experience_ids": []
+  },
+  {
+    "case_id": "eval_006",
+    "category": "known_success_condition",
+    "description": "Alpha 50-unit brass bushing turning order",
+    "rfq": {
+      "product": "Brass Bushing",
+      "quantity": 50,
+      "material": "C360 Brass",
+      "process": "CNC Turning",
+      "finish": "Cleaned",
+      "deadline_days": 8
+    },
+    "supplier": "Alpha Manufacturing",
+    "expected_classification": "FEASIBLE",
+    "expected_conditions": ["stock_material_available", "standard_tooling"],
+    "expected_risks": [],
+    "expected_verification": ["Confirm stock brass availability"],
+    "supporting_experience_ids": ["exp_alpha_003"]
+  },
+  {
+    "case_id": "eval_007",
+    "category": "high_volume_success",
+    "description": "Gamma Works 500-unit aluminium housing order",
+    "rfq": {
+      "product": "Aluminium Housing",
+      "quantity": 500,
+      "material": "6061 Aluminium",
+      "process": "CNC Machining",
+      "finish": "Powder Coated",
+      "deadline_days": 20
+    },
+    "supplier": "Gamma Works",
+    "expected_classification": "FEASIBLE",
+    "expected_conditions": ["high_volume_production"],
+    "expected_risks": [],
+    "expected_verification": ["Finalize high-volume PO terms"],
+    "supporting_experience_ids": ["exp_gamma_002"]
+  },
+  {
+    "case_id": "eval_008",
+    "category": "insufficient_evidence",
+    "description": "Zeta Tool & Die 60-unit CNC Aluminium Enclosure run",
+    "rfq": {
+      "product": "Aluminium Enclosure",
+      "quantity": 60,
+      "material": "6061 Aluminium",
+      "process": "CNC Machining",
+      "finish": "Clear Anodized",
+      "deadline_days": 12
+    },
+    "supplier": "Zeta Tool & Die",
+    "expected_classification": "INSUFFICIENT EVIDENCE",
+    "expected_conditions": [],
+    "expected_risks": ["Specialized toolmaker; no records for CNC volume runs"],
+    "expected_verification": ["Perform capability audit"],
+    "supporting_experience_ids": []
+  },
+  {
+    "case_id": "eval_009",
+    "category": "known_success_condition",
+    "description": "Beta Precision 60-unit 7075 Aluminium Baseplate",
+    "rfq": {
+      "product": "Aluminium Baseplate",
+      "quantity": 60,
+      "material": "7075 Aluminium",
+      "process": "CNC Milling",
+      "finish": "Clear Anodized",
+      "deadline_days": 10
+    },
+    "supplier": "Beta Precision",
+    "expected_classification": "FEASIBLE",
+    "expected_conditions": ["batch_size_50_to_100", "stock_material_available"],
+    "expected_risks": [],
+    "expected_verification": ["Confirm material stock"],
+    "supporting_experience_ids": ["exp_beta_002"]
+  },
+  {
+    "case_id": "eval_010",
+    "category": "known_failure_condition",
+    "description": "Gamma Works 40-unit specialty copper heat sink",
+    "rfq": {
+      "product": "Copper Heat Sink",
+      "quantity": 40,
+      "material": "C110 Copper",
+      "process": "CNC Milling",
+      "finish": "Bare",
+      "deadline_days": 12
+    },
+    "supplier": "Gamma Works",
+    "expected_classification": "CONDITIONAL",
+    "expected_conditions": [],
+    "expected_risks": ["Extreme delivery delay on low volume order"],
+    "expected_verification": ["Contractual delivery penalty required"],
+    "supporting_experience_ids": ["exp_gamma_003"]
+  },
+  {
+    "case_id": "eval_011",
+    "category": "known_success_condition",
+    "description": "Alpha 100-unit laser cut 304 Stainless Steel Bracket",
+    "rfq": {
+      "product": "Stainless Steel Bracket",
+      "quantity": 100,
+      "material": "304 Stainless Steel",
+      "process": "Laser Cutting",
+      "finish": "Deburred",
+      "deadline_days": 10
+    },
+    "supplier": "Alpha Manufacturing",
+    "expected_classification": "FEASIBLE",
+    "expected_conditions": ["standard_tooling", "stock_material_available"],
+    "expected_risks": [],
+    "expected_verification": ["Verify sheet metal stock"],
+    "supporting_experience_ids": ["exp_alpha_004"]
+  },
+  {
+    "case_id": "eval_012",
+    "category": "known_success_condition",
+    "description": "Delta Components 50-unit aluminium heat sink with custom fixture",
+    "rfq": {
+      "product": "Aluminium Heat Sink",
+      "quantity": 50,
+      "material": "6063 Aluminium",
+      "process": "CNC Machining",
+      "finish": "Nickel Plated",
+      "deadline_days": 10
+    },
+    "supplier": "Delta Components",
+    "expected_classification": "FEASIBLE",
+    "expected_conditions": ["high_setup_cost", "custom_fixture"],
+    "expected_risks": ["High fixture NRE fee"],
+    "expected_verification": ["Verify fixture cost"],
+    "supporting_experience_ids": ["exp_delta_002"]
+  },
+  {
+    "case_id": "eval_013",
+    "category": "insufficient_evidence",
+    "description": "Omni Quantum 5-unit Cryogenic Substrate",
+    "rfq": {
+      "product": "Quantum Cryo Substrate",
+      "quantity": 5,
+      "material": "Metamaterial B-4",
+      "process": "Cryogenic Micro-Etching",
+      "finish": "Polished",
+      "deadline_days": 7
+    },
+    "supplier": "Omni Quantum Labs",
+    "expected_classification": "INSUFFICIENT EVIDENCE",
+    "expected_conditions": [],
+    "expected_risks": ["Unseen supplier and exotic process"],
+    "expected_verification": ["Vendor qualification audit required"],
+    "supporting_experience_ids": []
+  },
+  {
+    "case_id": "eval_014",
+    "category": "known_success_condition",
+    "description": "Epsilon 20-unit 3D printed prototype cover",
+    "rfq": {
+      "product": "Aluminium Prototype Cover",
+      "quantity": 20,
+      "material": "AlSi10Mg Aluminium",
+      "process": "Metal 3D Printing (DMLS)",
+      "finish": "Shot Blasted",
+      "deadline_days": 5
+    },
+    "supplier": "Epsilon Manufacturing",
+    "expected_classification": "FEASIBLE",
+    "expected_conditions": ["additive_manufacturing", "rapid_prototype"],
+    "expected_risks": [],
+    "expected_verification": ["Confirm CAD model build preparation"],
+    "supporting_experience_ids": ["exp_epsilon_001"]
+  },
+  {
+    "case_id": "eval_015",
+    "category": "known_success_condition",
+    "description": "Beta Precision 200-unit 4140 Steel Drive Shaft turning",
+    "rfq": {
+      "product": "Steel Drive Shaft",
+      "quantity": 200,
+      "material": "4140 Steel",
+      "process": "CNC Turning",
+      "finish": "Black Oxide",
+      "deadline_days": 15
+    },
+    "supplier": "Beta Precision",
+    "expected_classification": "FEASIBLE",
+    "expected_conditions": ["larger_batch", "standard_tooling"],
+    "expected_risks": [],
+    "expected_verification": ["Finalize volume scheduling"],
+    "supporting_experience_ids": ["exp_beta_003"]
+  },
+  {
+    "case_id": "eval_016",
+    "category": "conditional_capability",
+    "description": "Alpha 85-unit Aluminium Enclosure with tight delivery requirement",
+    "rfq": {
+      "product": "Aluminium Enclosure",
+      "quantity": 85,
+      "material": "6061 Aluminium",
+      "process": "CNC Machining",
+      "finish": "Black Anodized",
+      "deadline_days": 10
+    },
+    "supplier": "Alpha Manufacturing",
+    "expected_classification": "CONDITIONAL",
+    "expected_conditions": ["stock_material_available", "standard_tooling"],
+    "expected_risks": ["custom tooling cost on higher batch sizes", "lead time schedule drift"],
+    "expected_verification": ["Verify tooling availability and material stock"],
+    "supporting_experience_ids": ["exp_alpha_001", "exp_alpha_002"]
+  },
+  {
+    "case_id": "eval_017",
+    "category": "known_success_condition",
+    "description": "Zeta Tool & Die 10-unit H13 Steel Mold Insert wire EDM",
+    "rfq": {
+      "product": "Steel Injection Mold Insert",
+      "quantity": 10,
+      "material": "H13 Tool Steel",
+      "process": "Wire EDM & CNC Milling",
+      "finish": "Polished SPI A2",
+      "deadline_days": 21
+    },
+    "supplier": "Zeta Tool & Die",
+    "expected_classification": "FEASIBLE",
+    "expected_conditions": ["high_precision_tooling", "hardened_steel"],
+    "expected_risks": [],
+    "expected_verification": ["Verify tooling spec"],
+    "supporting_experience_ids": ["exp_zeta_001"]
+  },
+  {
+    "case_id": "eval_018",
+    "category": "insufficient_evidence",
+    "description": "Gamma Works 30-unit Titanium Aerospace Bracket (unseen process/material for Gamma)",
+    "rfq": {
+      "product": "Titanium Aerospace Bracket",
+      "quantity": 30,
+      "material": "Ti-6Al-4V Titanium",
+      "process": "5-Axis CNC Machining",
+      "finish": "Anodized Type II",
+      "deadline_days": 14
+    },
+    "supplier": "Gamma Works",
+    "expected_classification": "INSUFFICIENT EVIDENCE",
+    "expected_conditions": [],
+    "expected_risks": ["No historical evidence for titanium 5-axis machining"],
+    "expected_verification": ["Request technical capability proof"],
+    "supporting_experience_ids": []
+  },
+  {
+    "case_id": "eval_019",
+    "category": "conditional_capability",
+    "description": "Gamma Works 60-unit Aluminium Housing small batch",
+    "rfq": {
+      "product": "Aluminium Housing",
+      "quantity": 60,
+      "material": "6061 Aluminium",
+      "process": "CNC Machining",
+      "finish": "Powder Coated",
+      "deadline_days": 12
+    },
+    "supplier": "Gamma Works",
+    "expected_classification": "CONDITIONAL",
+    "expected_conditions": ["high_volume_production"],
+    "expected_risks": ["Small-batch delivery delays"],
+    "expected_verification": ["Require SLA penalty agreement"],
+    "supporting_experience_ids": ["exp_gamma_001", "exp_gamma_002"]
+  },
+  {
+    "case_id": "eval_020",
+    "category": "known_success_condition",
+    "description": "Beta Precision 80-unit 316 Stainless Steel Enclosure run",
+    "rfq": {
+      "product": "Stainless Steel Enclosure",
+      "quantity": 80,
+      "material": "316 Stainless Steel",
+      "process": "CNC Machining",
+      "finish": "Passivated",
+      "deadline_days": 14
+    },
+    "supplier": "Beta Precision",
+    "expected_classification": "FEASIBLE",
+    "expected_conditions": ["batch_size_50_to_100", "standard_tooling"],
+    "expected_risks": [],
+    "expected_verification": ["Confirm standard tooling schedule"],
+    "supporting_experience_ids": ["exp_beta_001"]
+  },
+  {
+    "case_id": "eval_021",
+    "category": "insufficient_evidence",
+    "description": "Delta Components 200-unit Steel Drive Shaft (unseen steel volume run for Delta)",
+    "rfq": {
+      "product": "Steel Drive Shaft",
+      "quantity": 200,
+      "material": "4140 Steel",
+      "process": "CNC Turning",
+      "finish": "Black Oxide",
+      "deadline_days": 15
+    },
+    "supplier": "Delta Components",
+    "expected_classification": "INSUFFICIENT EVIDENCE",
+    "expected_conditions": [],
+    "expected_risks": ["No historical record for turning steel shafts"],
+    "expected_verification": ["Request turning quote"],
+    "supporting_experience_ids": []
+  },
+  {
+    "case_id": "eval_022",
+    "category": "known_success_condition",
+    "description": "Alpha 65-unit Aluminium Enclosure with confirmed stock material",
+    "rfq": {
+      "product": "Aluminium Enclosure",
+      "quantity": 65,
+      "material": "6061 Aluminium",
+      "process": "CNC Machining",
+      "finish": "Black Anodized",
+      "deadline_days": 14
+    },
+    "supplier": "Alpha Manufacturing",
+    "expected_classification": "CONDITIONAL",
+    "expected_conditions": ["stock_material_available", "standard_tooling"],
+    "expected_risks": ["custom tooling fee if standard tooling cannot be used"],
+    "expected_verification": ["Verify standard tooling availability"],
+    "supporting_experience_ids": ["exp_alpha_001", "exp_alpha_002"]
+  },
+  {
+    "case_id": "eval_023",
+    "category": "insufficient_evidence",
+    "description": "Epsilon 50-unit Brass Bushing CNC Turning",
+    "rfq": {
+      "product": "Brass Bushing",
+      "quantity": 50,
+      "material": "C360 Brass",
+      "process": "CNC Turning",
+      "finish": "Cleaned",
+      "deadline_days": 8
+    },
+    "supplier": "Epsilon Manufacturing",
+    "expected_classification": "INSUFFICIENT EVIDENCE",
+    "expected_conditions": [],
+    "expected_risks": ["No historical turning evidence"],
+    "expected_verification": ["Request quote"],
+    "supporting_experience_ids": []
+  },
+  {
+    "case_id": "eval_024",
+    "category": "known_success_condition",
+    "description": "Delta Components 25-unit Titanium Bracket aerospace spec",
+    "rfq": {
+      "product": "Titanium Aerospace Bracket",
+      "quantity": 25,
+      "material": "Ti-6Al-4V Titanium",
+      "process": "5-Axis CNC Machining",
+      "finish": "Anodized Type II",
+      "deadline_days": 14
+    },
+    "supplier": "Delta Components",
+    "expected_classification": "FEASIBLE",
+    "expected_conditions": ["high_setup_cost", "aerospace_spec"],
+    "expected_risks": ["NRE setup cost"],
+    "expected_verification": ["Confirm NRE setup fee"],
+    "supporting_experience_ids": ["exp_delta_001"]
+  },
+  {
+    "case_id": "eval_025",
+    "category": "known_failure_condition",
+    "description": "Gamma Works 35-unit low volume aluminium housing small batch",
+    "rfq": {
+      "product": "Aluminium Housing",
+      "quantity": 35,
+      "material": "6061 Aluminium",
+      "process": "CNC Machining",
+      "finish": "Powder Coated",
+      "deadline_days": 10
+    },
+    "supplier": "Gamma Works",
+    "expected_classification": "CONDITIONAL",
+    "expected_conditions": [],
+    "expected_risks": ["Small-batch delivery delay of 25 days"],
+    "expected_verification": ["Require SLA penalty agreement"],
+    "supporting_experience_ids": ["exp_gamma_001"]
+  }
+]
